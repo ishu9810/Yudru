@@ -1,0 +1,6 @@
+# Copy and customize this template for deployment.
+telemetry_hz: 10
+min_safe_distance_m: 10
+gps_min_satellites: 8
+low_battery_percent: 20
+default_takeoff_alt_m: 10
