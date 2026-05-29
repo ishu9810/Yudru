@@ -10,6 +10,8 @@ from pymavlink import mavutil
 
 from src.communication.mavlink_handler import MAVLinkHandler
 
+FLYING_ALTITUDE_THRESHOLD_M = 0.5
+
 
 @dataclass
 class DroneState:
@@ -68,7 +70,11 @@ class DroneController:
                 self.state.lon = payload.get("lon")
                 self.state.alt_m = payload.get("alt_m")
                 self.state.heading_deg = payload.get("heading_deg")
-                self.state.flying = (self.state.alt_m or 0) > 0.5
+                self.state.flying = bool(
+                    self.state.armed
+                    and self.state.alt_m is not None
+                    and self.state.alt_m > FLYING_ALTITUDE_THRESHOLD_M
+                )
             elif p_type == "SYS_STATUS":
                 self.state.battery_v = payload.get("battery_v")
                 self.state.battery_pct = payload.get("battery_pct")
@@ -81,13 +87,24 @@ class DroneController:
         self._command_queue.put((command, args))
 
     def drain_commands(self) -> None:
+        command_map = {
+            "set_mode": self.set_mode,
+            "arm": self.arm,
+            "disarm": self.disarm,
+            "takeoff": self.takeoff,
+            "land": self.land,
+            "move_to": self.move_to,
+        }
         while not self._command_queue.empty():
             command, args = self._command_queue.get_nowait()
-            getattr(self, command)(*args)
+            if command not in command_map:
+                raise ValueError(f"Unsupported command '{command}' for drone {self.drone_id}")
+            command_map[command](*args)
 
     def set_mode(self, mode: str) -> None:
         self.mavlink.set_mode(mode)
-        self.state.mode = mode
+        with self._state_lock:
+            self.state.mode = mode
 
     def arm(self) -> None:
         self.mavlink.arm()

@@ -41,12 +41,14 @@ class SerialConnection:
 
     def write(self, payload: bytes) -> None:
         self.ensure_connected()
-        assert self._conn is not None
+        if self._conn is None:
+            raise RuntimeError("Serial connection not initialized")
         self._conn.write(payload)
 
     def read(self, size: int = 1) -> bytes:
         self.ensure_connected()
-        assert self._conn is not None
+        if self._conn is None:
+            raise RuntimeError("Serial connection not initialized")
         return self._conn.read(size)
 
     def close(self) -> None:

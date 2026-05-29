@@ -8,6 +8,8 @@ from pymavlink import mavutil
 
 from src.communication.message_parser import parse_message
 
+MAVLINK_TIME_BOOT_MS_MASK = 0xFFFFFFFF
+
 
 class MAVLinkHandler:
     def __init__(self, connection_str: str, baudrate: int = 115200):
@@ -17,10 +19,16 @@ class MAVLinkHandler:
         self._listen_thread: Optional[threading.Thread] = None
         self._running = False
         self.last_heartbeat_ts = 0.0
+        self._boot_monotonic = time.monotonic()
 
     def connect(self, heartbeat_timeout: float = 10.0) -> None:
         self.master = mavutil.mavlink_connection(self.connection_str, baud=self.baudrate)
-        self.master.wait_heartbeat(timeout=heartbeat_timeout)
+        try:
+            self.master.wait_heartbeat(timeout=heartbeat_timeout)
+        except Exception as exc:
+            raise ConnectionError(
+                f"No heartbeat received from {self.connection_str} within {heartbeat_timeout}s"
+            ) from exc
         self.last_heartbeat_ts = time.time()
 
     def disconnect(self) -> None:
@@ -86,8 +94,9 @@ class MAVLinkHandler:
     def set_position_target_global_int(self, lat: float, lon: float, alt: float, yaw_deg: float = 0.0) -> None:
         if self.master is None:
             raise RuntimeError("Not connected")
+        time_boot_ms = int((time.monotonic() - self._boot_monotonic) * 1000) & MAVLINK_TIME_BOOT_MS_MASK
         self.master.mav.set_position_target_global_int_send(
-            int(time.time() * 1000) & 0xFFFFFFFF,
+            time_boot_ms,
             self.master.target_system,
             self.master.target_component,
             mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,

@@ -24,6 +24,7 @@ class DroneSwarmGCS:
             heartbeat_timeout_sec=float(swarm_cfg.get("heartbeat_timeout_sec", 5)),
             gps_min_satellites=int(swarm_cfg.get("gps_min_satellites", 8)),
             low_battery_percent=int(swarm_cfg.get("low_battery_percent", 20)),
+            hold_seconds=float(swarm_cfg.get("failsafe_hold_sec", 5)),
         )
         self.formations = FormationController(self.swarm)
         self.missions = MissionExecutor(self.swarm)
@@ -56,10 +57,11 @@ class DroneSwarmGCS:
             for drone in self.swarm.drones:
                 self.failsafe.execute(drone)
         else:
+            drones_by_id = {drone.drone_id: drone for drone in self.swarm.drones}
             for drone_id, lat, lon in avoidance_cmds:
-                for drone in self.swarm.drones:
-                    if drone.drone_id == drone_id:
-                        drone.move_to(lat, lon, drone.state.alt_m or 5.0)
+                drone = drones_by_id.get(drone_id)
+                if drone is not None:
+                    drone.move_to(lat, lon, drone.state.alt_m or 5.0)
 
         for drone in self.swarm.drones:
             if self.failsafe.should_trigger(drone):
@@ -70,5 +72,8 @@ class DroneSwarmGCS:
     def run_forever(self):
         period = 1 / max(self.telemetry_hz, 1)
         while True:
+            loop_start = time.time()
             self.monitor_once()
-            time.sleep(period)
+            sleep_for = period - (time.time() - loop_start)
+            if sleep_for > 0:
+                time.sleep(sleep_for)

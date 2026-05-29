@@ -10,7 +10,11 @@ from src.utils.logger import build_logger
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="5-drone real-world swarm GCS")
-    parser.add_argument("--config-dir", default="config", help="Path to YAML config directory")
+    parser.add_argument(
+        "--config-dir",
+        default="config",
+        help="Path to config directory containing drone_config.yaml, swarm_config.yaml, and formations.yaml",
+    )
     parser.add_argument("--run-loop", action="store_true", help="Run continuous monitor loop")
     args = parser.parse_args()
 

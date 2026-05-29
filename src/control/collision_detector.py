@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from itertools import combinations
+from math import cos, radians
 
 from src.algorithms.collision_avoidance import perpendicular_avoidance_vector
-from src.utils.helpers import haversine_distance_m, offset_gps_m, utc_now_iso
+from src.utils.helpers import EARTH_RADIUS_M, haversine_distance_m, offset_gps_m, utc_now_iso
 
 
 @dataclass
@@ -39,7 +40,9 @@ class CollisionDetector:
                 evt = CollisionEvent("WARNING", d1.drone_id, d2.drone_id, distance, utc_now_iso())
                 events.append(evt)
                 self.events.append(evt)
-                dx, dy = (d2.lon - d1.lon) * 111320, (d2.lat - d1.lat) * 111320
+                mean_lat = radians((d1.lat + d2.lat) / 2)
+                dx = radians(d2.lon - d1.lon) * EARTH_RADIUS_M * cos(mean_lat)
+                dy = radians(d2.lat - d1.lat) * EARTH_RADIUS_M
                 east, north = perpendicular_avoidance_vector(dx, dy, self.shift_m)
                 new_lat, new_lon = offset_gps_m(d2.lat, d2.lon, north, east)
                 avoidance_cmds.append((d2.drone_id, new_lat, new_lon))

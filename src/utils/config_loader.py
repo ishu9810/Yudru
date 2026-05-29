@@ -15,7 +15,7 @@ class ConfigLoader:
         with path.open("r", encoding="utf-8") as handle:
             data = yaml.safe_load(handle) or {}
         if not isinstance(data, dict):
-            raise ValueError(f"Invalid config format in {path}")
+            raise ValueError(f"Invalid config format in {path}: expected dict, got {type(data).__name__}")
         return data
 
     def load_all(self) -> dict[str, Any]:

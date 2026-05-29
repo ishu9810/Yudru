@@ -16,6 +16,9 @@ class MissionExecutor:
 
     def execute(self, mission_file: str, dwell_sec: float = 2.0):
         waypoints = self.load_mission(mission_file)
-        for wp in waypoints:
+        required_keys = {"lat", "lon", "alt"}
+        for idx, wp in enumerate(waypoints):
+            if not isinstance(wp, dict) or not required_keys.issubset(wp.keys()):
+                raise ValueError(f"Invalid waypoint at index {idx}: expected keys {sorted(required_keys)}")
             self.swarm_manager.move_all(wp["lat"], wp["lon"], wp["alt"])
             time.sleep(dwell_sec)
