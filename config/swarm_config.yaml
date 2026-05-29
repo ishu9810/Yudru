@@ -1,0 +1,14 @@
+swarm:
+  size: 5
+  default_altitude_m: 3.0
+  default_spacing_m: 2.0
+  control_rate_hz: 20
+safety:
+  min_distance_m: 1.5
+  min_battery_voltage: 14.0
+  min_gps_fix: 2
+  geofence_radius_m: 250.0
+communication:
+  protocol: esp-now
+  mesh_channel: 6
+  retry_limit: 3

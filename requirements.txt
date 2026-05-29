@@ -1,0 +1,2 @@
+PyYAML>=6.0
+mavsdk>=2.8.0
