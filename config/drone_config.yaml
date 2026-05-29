@@ -1,0 +1,31 @@
+drones:
+  - id: 0
+    name: drone_0
+    connection: COM3
+    baudrate: 115200
+    mavlink_sysid: 1
+    formation_offset_m: [0.0, 0.0, 0.0]
+  - id: 1
+    name: drone_1
+    connection: COM4
+    baudrate: 115200
+    mavlink_sysid: 2
+    formation_offset_m: [10.0, 0.0, 0.0]
+  - id: 2
+    name: drone_2
+    connection: COM5
+    baudrate: 115200
+    mavlink_sysid: 3
+    formation_offset_m: [-10.0, 0.0, 0.0]
+  - id: 3
+    name: drone_3
+    connection: COM6
+    baudrate: 115200
+    mavlink_sysid: 4
+    formation_offset_m: [0.0, 10.0, 0.0]
+  - id: 4
+    name: drone_4
+    connection: COM7
+    baudrate: 115200
+    mavlink_sysid: 5
+    formation_offset_m: [0.0, -10.0, 0.0]
