@@ -1,0 +1,16 @@
+formations:
+  square:
+    spacing_m: 2.0
+    transition_s: 3
+  line:
+    spacing_m: 2.5
+    transition_s: 2
+  circle:
+    spacing_m: 2.0
+    transition_s: 4
+  triangle:
+    spacing_m: 2.0
+    transition_s: 3
+  grid:
+    spacing_m: 2.0
+    transition_s: 3

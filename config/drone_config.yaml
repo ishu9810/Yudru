@@ -1,0 +1,16 @@
+drones:
+  - id: drone1
+    connection: udp://:14540
+    video_stream: udp://239.0.0.1:5601
+  - id: drone2
+    connection: udp://:14541
+    video_stream: udp://239.0.0.1:5602
+  - id: drone3
+    connection: udp://:14542
+    video_stream: udp://239.0.0.1:5603
+  - id: drone4
+    connection: udp://:14543
+    video_stream: udp://239.0.0.1:5604
+  - id: drone5
+    connection: udp://:14544
+    video_stream: udp://239.0.0.1:5605
