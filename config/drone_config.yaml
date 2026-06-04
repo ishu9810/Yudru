@@ -1,0 +1,50 @@
+# Configuration for 5 SpeedyBee F405 V3 drones with ArduPilot
+# Edit COM ports according to your USB connections
+
+drones:
+  drone_0:
+    port: COM3          # USB serial port - UPDATE THIS
+    baud: 115200       # MAVLink baud rate
+    system_id: 1       # MAVLink system ID (unique for each drone)
+    component_id: 1    # MAVLink component ID
+    formation_offset: [-10, -10, 0]  # meters (relative to formation center)
+    home_location: [37.7749, -122.4194, 0]  # lat, lon, alt
+    
+  drone_1:
+    port: COM4
+    baud: 115200
+    system_id: 2
+    component_id: 1
+    formation_offset: [10, -10, 0]
+    home_location: [37.7749, -122.4194, 0]
+    
+  drone_2:
+    port: COM5
+    baud: 115200
+    system_id: 3
+    component_id: 1
+    formation_offset: [-20, 0, 0]
+    home_location: [37.7749, -122.4194, 0]
+    
+  drone_3:
+    port: COM6
+    baud: 115200
+    system_id: 4
+    component_id: 1
+    formation_offset: [20, 0, 0]
+    home_location: [37.7749, -122.4194, 0]
+    
+  drone_4:
+    port: COM7
+    baud: 115200
+    system_id: 5
+    component_id: 1
+    formation_offset: [0, 10, 0]
+    home_location: [37.7749, -122.4194, 0]
+
+# Connection settings
+connection:
+  timeout: 5.0  # seconds
+  retry_attempts: 3
+  retry_delay: 1.0  # seconds
+  heartbeat_timeout: 5.0  # seconds

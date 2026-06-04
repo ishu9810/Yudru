@@ -1,0 +1,42 @@
+# Swarm-wide safety and performance configuration
+
+swarm:
+  # Safety distances (meters)
+  min_safe_distance: 10.0      # Drones try to maintain this distance
+  emergency_distance: 5.0      # Triggers failsafe if breached
+  critical_distance: 2.0       # Immediate emergency landing
+  
+  # Flight constraints
+  max_speed: 5.0              # m/s
+  max_altitude: 50.0          # meters
+  min_altitude: 1.0           # meters
+  
+  # GPS requirements
+  gps_min_satellites: 8        # Minimum satellites for arming
+  gps_hdop_max: 2.5           # Maximum horizontal dilution of precision
+  
+  # Battery constraints
+  battery_min_percent: 20      # Minimum battery % for flight
+  battery_critical_percent: 10 # Trigger immediate RTH
+  battery_check_interval: 2.0  # seconds
+  
+  # Communication
+  telemetry_rate: 10           # Hz (messages per second)
+  command_timeout: 3.0         # seconds
+  
+  # Formation
+  formation_hold_tolerance: 1.0  # meters (position error tolerance)
+  formation_speed: 2.0           # m/s (speed during formation flight)
+  
+  # Failsafe
+  failsafe:
+    signal_loss_timeout: 5.0     # seconds before RTH triggered
+    rth_hold_time: 5.0           # seconds to hold position before land
+    collision_trigger: true      # Enable collision-based failsafe
+    low_battery_trigger: true    # Enable low-battery RTH
+
+# Logging
+logging:
+  level: INFO                  # DEBUG, INFO, WARNING, ERROR
+  file: logs/swarm_flight.log
+  csv_export: true             # Save telemetry to CSV

@@ -1,0 +1,64 @@
+# Predefined formation patterns for 5 drones
+# All positions are relative to formation center in meters
+# Format: [north_offset, east_offset, altitude_offset]
+
+formations:
+  square:
+    name: "Square Formation"
+    formation_size: 20  # meters per side
+    center_altitude: 0
+    positions:
+      drone_0: [-10, -10, 0]   # Front-left
+      drone_1: [10, -10, 0]    # Front-right
+      drone_2: [-20, 0, 0]     # Mid-left
+      drone_3: [20, 0, 0]      # Mid-right
+      drone_4: [0, 10, 0]      # Back-center
+    flight_speed: 2.0
+    
+  line:
+    name: "Line Formation"
+    formation_size: 20  # meters spacing
+    center_altitude: 0
+    positions:
+      drone_0: [-40, 0, 0]
+      drone_1: [-20, 0, 0]
+      drone_2: [0, 0, 0]
+      drone_3: [20, 0, 0]
+      drone_4: [40, 0, 0]
+    flight_speed: 3.0
+    
+  circle:
+    name: "Circle Formation"
+    formation_size: 20  # radius in meters
+    center_altitude: 0
+    positions:
+      drone_0: [0, -20, 0]      # South
+      drone_1: [14.14, -14.14, 0]  # Southeast
+      drone_2: [20, 0, 0]       # East
+      drone_3: [14.14, 14.14, 0]   # Northeast
+      drone_4: [-20, 0, 0]      # West
+    flight_speed: 2.0
+    
+  triangle:
+    name: "Triangle Formation"
+    formation_size: 25  # meters
+    center_altitude: 0
+    positions:
+      drone_0: [-15, -13, 0]    # Front-left
+      drone_1: [15, -13, 0]     # Front-right
+      drone_2: [-8, 13, 0]      # Mid-left
+      drone_3: [8, 13, 0]       # Mid-right
+      drone_4: [0, -5, 0]       # Center
+    flight_speed: 2.0
+    
+  grid:
+    name: "Grid Formation"
+    formation_size: 15  # meters spacing
+    center_altitude: 0
+    positions:
+      drone_0: [-15, -15, 0]
+      drone_1: [0, -15, 0]
+      drone_2: [15, -15, 0]
+      drone_3: [-15, 0, 0]
+      drone_4: [15, 0, 0]
+    flight_speed: 2.0
